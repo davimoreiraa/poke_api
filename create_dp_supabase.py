@@ -1,6 +1,7 @@
 import dotenv
 import psycopg2
 import os
+import requests
 
 dotenv.load_dotenv()
 
@@ -14,7 +15,7 @@ con = psycopg2.connect(
 )
 
 with con.cursor() as cursor:
-    sql = """
+    sql_create_table = """
         CREATE TABLE Pokemons (
             id INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
             name VARCHAR(60),
@@ -30,5 +31,5 @@ with con.cursor() as cursor:
         )
     """
 
-    cursor.execute(sql)
+    cursor.execute(sql_create_table)
     con.commit()

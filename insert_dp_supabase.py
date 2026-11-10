@@ -2,6 +2,7 @@ import dotenv
 import psycopg2
 import os
 import requests
+import time
 
 dotenv.load_dotenv()
 
@@ -15,10 +16,11 @@ con = psycopg2.connect(
 )
 
 with con.cursor() as cursor:
-    url = "https://pokeapi.co/api/v2/pokemon?limit=10"    
+    url = "https://pokeapi.co/api/v2/pokemon?limit=1026"    
     response = requests.get(url).json()
 
     for pokemon in response['results']:
+        time.sleep(0.3)
         url_pokemon = pokemon['url']
         dados_pokemon = requests.get(url_pokemon).json()
 
@@ -43,6 +45,7 @@ with con.cursor() as cursor:
 
         # collection generation:
         url_generation = dados_pokemon['species']['url']
+        time.sleep(0.3)
         species_response = requests.get(url_generation).json()
         pokemon_gen = species_response['generation']['name']
 
@@ -56,6 +59,7 @@ with con.cursor() as cursor:
             """
 
             cursor.execute(sql, [pokemon_name, type_1, type_2, pokemon_gen, pokemon_hp, pokemon_attack, pokemon_defense, pokemon_speed, pokemon_height, pokemon_weight])
+            print('executou type 1')
         else:
             sql = """
                 INSERT INTO pokemons (name, type_1, gen, hp, attack, defense, speed, height, weight) VALUES
@@ -63,5 +67,6 @@ with con.cursor() as cursor:
 
             """
             cursor.execute(sql, [pokemon_name, type_1, pokemon_gen, pokemon_hp, pokemon_attack, pokemon_defense, pokemon_speed, pokemon_height, pokemon_weight])
+            print('executou type 2')
 
     con.commit()

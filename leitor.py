@@ -1,11 +1,10 @@
 import psycopg2
 import dotenv
-import os
-import requests
 
 dotenv.load_dotenv()
 
 con = psycopg2.connect(
+    # dados de login no banco de dados como leitor:
     host='db.jttqcuxpvkppfglkbkce.supabase.co',
     user='leitor',
     password='123',

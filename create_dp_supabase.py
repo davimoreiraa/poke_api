@@ -1,10 +1,8 @@
 import dotenv
 import psycopg2
 import os
-import requests
 
 dotenv.load_dotenv()
-
 
 con = psycopg2.connect(
     dbname= os.environ['SUPABASE_DATABASE'],
